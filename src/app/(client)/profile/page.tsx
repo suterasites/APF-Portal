@@ -137,7 +137,7 @@ export default function ClientProfilePage() {
               />
               <InfoRow
                 label="Date of Birth"
-                value={formatDate(clientProfile.dateOfBirth)}
+                value={clientProfile.dateOfBirth ? formatDate(clientProfile.dateOfBirth) : ""}
               />
               <InfoRow
                 label="Address"
