@@ -29,7 +29,7 @@ type CalendarView = "day" | "week" | "month";
 type CoachFilter = "all" | "James" | "Chris";
 
 // ---------------------------------------------------------------------------
-// Mock data - realistic football coaching sessions
+// Session data (populated from database)
 // ---------------------------------------------------------------------------
 
 function generateMockSessions(): CalendarSession[] {

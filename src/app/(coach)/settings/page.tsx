@@ -7,24 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-// Mock data
+// Settings data
 const initialProfile = {
-  name: "James Sutera",
-  email: "james@accelerateperformance.com.au",
-  phone: "0412 345 678",
-  bio: "Head coach at Accelerate Performance Football. Specialising in speed, agility, and technical development for footballers of all levels.",
+  name: "",
+  email: "",
+  phone: "",
+  bio: "",
 };
 
 const initialBusiness = {
-  businessName: "Accelerate Performance Football",
+  businessName: "",
   defaultSessionDuration: "60",
   cancellationPolicy: "24",
-  locations: [
-    "Princes Park - Field 1",
-    "Princes Park - Field 2",
-    "Gosch's Paddock",
-    "Online - Zoom",
-  ],
+  locations: [] as string[],
 };
 
 const initialNotifications = {
@@ -157,9 +152,8 @@ export default function CoachSettingsPage() {
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#0A0A0A] dark:bg-[#FAFAFA]">
                     <span className="text-xl font-bold text-white dark:text-[#0A0A0A]">
                       {profile.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
+                        ? profile.name.split(" ").map((n) => n[0]).join("")
+                        : ""}
                     </span>
                   </div>
                   <div>

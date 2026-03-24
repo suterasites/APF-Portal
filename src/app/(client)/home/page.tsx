@@ -7,62 +7,26 @@ import { Badge } from "@/components/ui/badge";
 import { formatDate, formatTime } from "@/lib/utils";
 import Link from "next/link";
 
-// Mock data
-const clientName = "Lachlan Mitchell";
+// Data placeholders
+const clientName: string = "";
 
-const upcomingSessions = [
-  {
-    id: "1",
-    title: "1-on-1 Speed & Agility",
-    date: "2026-03-25T16:00:00+11:00",
-    coach: "James Sutera",
-    location: "Princes Park - Field 2",
-    type: "one_on_one" as const,
-  },
-  {
-    id: "2",
-    title: "Group Skills Session",
-    date: "2026-03-27T17:30:00+11:00",
-    coach: "Chris Sutera",
-    location: "Gosch's Paddock",
-    type: "group" as const,
-  },
-  {
-    id: "3",
-    title: "1-on-1 Match Analysis Review",
-    date: "2026-03-30T10:00:00+11:00",
-    coach: "James Sutera",
-    location: "Online - Zoom",
-    type: "one_on_one" as const,
-  },
-];
+const upcomingSessions: {
+  id: string;
+  title: string;
+  date: string;
+  coach: string;
+  location: string;
+  type: "one_on_one" | "group";
+}[] = [];
 
-const recentNotifications = [
-  {
-    id: "1",
-    type: "payment_reminder",
-    title: "Invoice due",
-    message: "Invoice #INV-042 for $150.00 is due on 28/03/2026",
-    time: "2 hours ago",
-    read: false,
-  },
-  {
-    id: "2",
-    type: "session_reminder",
-    title: "Session tomorrow",
-    message: "1-on-1 Speed & Agility with James at 4:00 PM",
-    time: "5 hours ago",
-    read: false,
-  },
-  {
-    id: "3",
-    type: "booking_confirmation",
-    title: "Booking confirmed",
-    message: "Group Skills Session on 27/03/2026 has been confirmed",
-    time: "1 day ago",
-    read: true,
-  },
-];
+const recentNotifications: {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  time: string;
+  read: boolean;
+}[] = [];
 
 const sessionTypeLabels: Record<string, string> = {
   one_on_one: "1-on-1",
@@ -86,7 +50,7 @@ export default function ClientHomePage() {
       {/* Welcome message */}
       <div>
         <h1 className="text-2xl font-bold text-[#0A0A0A] dark:text-[#FAFAFA]">
-          Welcome back, {clientName.split(" ")[0]}
+          Welcome back{clientName ? `, ${clientName.split(" ")[0]}` : ""}
         </h1>
         <p className="mt-1 text-[#6B6B6B]">
           Here is what is coming up for you.
@@ -163,39 +127,43 @@ export default function ClientHomePage() {
             </Link>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {upcomingSessions.map((session) => (
-                <div
-                  key={session.id}
-                  className="flex items-start gap-4 rounded-lg border border-[#E5E5E5] dark:border-[#2A2A2A] bg-white dark:bg-[#0A0A0A] p-4"
-                >
-                  <div className="flex flex-col items-center justify-center rounded-lg bg-[#0A0A0A] dark:bg-[#FAFAFA] px-3 py-2 text-center">
-                    <span className="text-xs font-medium text-white dark:text-[#0A0A0A]">
-                      {new Date(session.date).toLocaleDateString("en-AU", {
-                        month: "short",
-                      })}
-                    </span>
-                    <span className="text-lg font-bold text-white dark:text-[#0A0A0A]">
-                      {new Date(session.date).getDate()}
-                    </span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium text-[#0A0A0A] dark:text-[#FAFAFA] truncate">
-                        {session.title}
-                      </p>
-                      <Badge variant="secondary">
-                        {sessionTypeLabels[session.type]}
-                      </Badge>
+            {upcomingSessions.length === 0 ? (
+              <p className="text-sm text-[#6B6B6B]">No upcoming sessions.</p>
+            ) : (
+              <div className="space-y-4">
+                {upcomingSessions.map((session) => (
+                  <div
+                    key={session.id}
+                    className="flex items-start gap-4 rounded-lg border border-[#E5E5E5] dark:border-[#2A2A2A] bg-white dark:bg-[#0A0A0A] p-4"
+                  >
+                    <div className="flex flex-col items-center justify-center rounded-lg bg-[#0A0A0A] dark:bg-[#FAFAFA] px-3 py-2 text-center">
+                      <span className="text-xs font-medium text-white dark:text-[#0A0A0A]">
+                        {new Date(session.date).toLocaleDateString("en-AU", {
+                          month: "short",
+                        })}
+                      </span>
+                      <span className="text-lg font-bold text-white dark:text-[#0A0A0A]">
+                        {new Date(session.date).getDate()}
+                      </span>
                     </div>
-                    <p className="mt-1 text-sm text-[#6B6B6B]">
-                      {formatTime(session.date)} - {session.coach}
-                    </p>
-                    <p className="text-sm text-[#6B6B6B]">{session.location}</p>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-[#0A0A0A] dark:text-[#FAFAFA] truncate">
+                          {session.title}
+                        </p>
+                        <Badge variant="secondary">
+                          {sessionTypeLabels[session.type]}
+                        </Badge>
+                      </div>
+                      <p className="mt-1 text-sm text-[#6B6B6B]">
+                        {formatTime(session.date)} - {session.coach}
+                      </p>
+                      <p className="text-sm text-[#6B6B6B]">{session.location}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -208,38 +176,42 @@ export default function ClientHomePage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {recentNotifications.map((notification) => (
-                <div
-                  key={notification.id}
-                  className={`flex items-start gap-3 rounded-lg border p-3 ${
-                    notification.read
-                      ? "border-[#E5E5E5] dark:border-[#2A2A2A] bg-white dark:bg-[#0A0A0A]"
-                      : "border-[#0A0A0A] dark:border-[#FAFAFA] bg-white dark:bg-[#0A0A0A]"
-                  }`}
-                >
-                  <div className="mt-0.5">
-                    {getNotificationIcon(notification.type)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
-                        {notification.title}
-                      </p>
-                      {!notification.read && (
-                        <span className="h-2 w-2 rounded-full bg-[#0A0A0A] dark:bg-[#FAFAFA]" />
-                      )}
+            {recentNotifications.length === 0 ? (
+              <p className="text-sm text-[#6B6B6B]">No notifications.</p>
+            ) : (
+              <div className="space-y-3">
+                {recentNotifications.map((notification) => (
+                  <div
+                    key={notification.id}
+                    className={`flex items-start gap-3 rounded-lg border p-3 ${
+                      notification.read
+                        ? "border-[#E5E5E5] dark:border-[#2A2A2A] bg-white dark:bg-[#0A0A0A]"
+                        : "border-[#0A0A0A] dark:border-[#FAFAFA] bg-white dark:bg-[#0A0A0A]"
+                    }`}
+                  >
+                    <div className="mt-0.5">
+                      {getNotificationIcon(notification.type)}
                     </div>
-                    <p className="mt-0.5 text-sm text-[#6B6B6B]">
-                      {notification.message}
-                    </p>
-                    <p className="mt-1 text-xs text-[#6B6B6B]">
-                      {notification.time}
-                    </p>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
+                          {notification.title}
+                        </p>
+                        {!notification.read && (
+                          <span className="h-2 w-2 rounded-full bg-[#0A0A0A] dark:bg-[#FAFAFA]" />
+                        )}
+                      </div>
+                      <p className="mt-0.5 text-sm text-[#6B6B6B]">
+                        {notification.message}
+                      </p>
+                      <p className="mt-1 text-xs text-[#6B6B6B]">
+                        {notification.time}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

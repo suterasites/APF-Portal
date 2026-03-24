@@ -59,123 +59,14 @@ interface SessionTemplate {
 }
 
 // -------------------------------------------------
-// Mock Data
+// Service data (populated from database)
 // -------------------------------------------------
 
-const mockPackages: PackageItem[] = [
-  {
-    id: "pkg-1",
-    name: "10-Session Pack",
-    description: "Ten 1-on-1 coaching sessions. Best value for regular training.",
-    price: 110000,
-    totalSessions: 10,
-    expiryDays: 90,
-    isActive: true,
-  },
-  {
-    id: "pkg-2",
-    name: "6-Week Speed Program",
-    description: "Intensive speed and agility program with two sessions per week.",
-    price: 72000,
-    totalSessions: 12,
-    expiryDays: 45,
-    isActive: true,
-  },
-  {
-    id: "pkg-3",
-    name: "Single Session",
-    description: "One-off 1-on-1 coaching session.",
-    price: 12000,
-    totalSessions: 1,
-    expiryDays: 30,
-    isActive: true,
-  },
-  {
-    id: "pkg-4",
-    name: "5-Session Starter",
-    description: "Introductory pack for new clients. Five sessions to get started.",
-    price: 55000,
-    totalSessions: 5,
-    expiryDays: 60,
-    isActive: false,
-  },
-];
+const mockPackages: PackageItem[] = [];
 
-const mockMemberships: Membership[] = [
-  {
-    id: "mem-1",
-    name: "Weekly Training",
-    description: "One 1-on-1 session per week, ongoing.",
-    price: 10000,
-    billingFrequency: "weekly",
-    sessionsIncluded: 1,
-    groupSessionsIncluded: 0,
-    isActive: true,
-  },
-  {
-    id: "mem-2",
-    name: "Monthly Unlimited",
-    description: "Unlimited group sessions plus two 1-on-1 sessions per month.",
-    price: 35000,
-    billingFrequency: "monthly",
-    sessionsIncluded: 2,
-    groupSessionsIncluded: 99,
-    isActive: true,
-  },
-  {
-    id: "mem-3",
-    name: "Fortnightly Skills",
-    description: "One 1-on-1 session every two weeks with a group session in between.",
-    price: 14000,
-    billingFrequency: "fortnightly",
-    sessionsIncluded: 1,
-    groupSessionsIncluded: 1,
-    isActive: false,
-  },
-];
+const mockMemberships: Membership[] = [];
 
-const mockTemplates: SessionTemplate[] = [
-  {
-    id: "tpl-1",
-    name: "1-on-1 Speed & Agility",
-    type: "one_on_one",
-    defaultDuration: 60,
-    defaultCapacity: 1,
-    defaultPrice: 12000,
-    defaultLocation: "Gosch's Paddock",
-    description: "Individual speed and agility training with ladder drills, cone work, and sprint coaching.",
-  },
-  {
-    id: "tpl-2",
-    name: "Group Skills Session",
-    type: "group",
-    defaultDuration: 90,
-    defaultCapacity: 12,
-    defaultPrice: 4000,
-    defaultLocation: "Princes Park",
-    description: "Group session focusing on ball control, passing, and match-play scenarios.",
-  },
-  {
-    id: "tpl-3",
-    name: "Match Analysis Review",
-    type: "one_on_one",
-    defaultDuration: 30,
-    defaultCapacity: 1,
-    defaultPrice: 8000,
-    defaultLocation: "APF Office",
-    description: "Video review of recent match footage with tactical breakdown and improvement areas.",
-  },
-  {
-    id: "tpl-4",
-    name: "Pre-Season Fitness",
-    type: "group",
-    defaultDuration: 75,
-    defaultCapacity: 16,
-    defaultPrice: 3500,
-    defaultLocation: "Princes Park",
-    description: "High-intensity endurance and conditioning session for pre-season preparation.",
-  },
-];
+const mockTemplates: SessionTemplate[] = [];
 
 // -------------------------------------------------
 // Tab configuration
@@ -242,6 +133,13 @@ export default function ServicesPage() {
             </Button>
           </div>
 
+          {mockPackages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#E5E5E5] dark:border-[#2A2A2A] py-16">
+              <Package className="h-10 w-10 text-[#6B6B6B] mb-3" />
+              <p className="text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">No packages yet</p>
+              <p className="mt-1 text-xs text-[#6B6B6B]">Create your first package to get started.</p>
+            </div>
+          ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {mockPackages.map((pkg) => (
               <Card key={pkg.id}>
@@ -300,6 +198,7 @@ export default function ServicesPage() {
               </Card>
             ))}
           </div>
+          )}
         </div>
       )}
 
@@ -321,6 +220,13 @@ export default function ServicesPage() {
             </Button>
           </div>
 
+          {mockMemberships.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#E5E5E5] dark:border-[#2A2A2A] py-16">
+              <CreditCard className="h-10 w-10 text-[#6B6B6B] mb-3" />
+              <p className="text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">No memberships yet</p>
+              <p className="mt-1 text-xs text-[#6B6B6B]">Create your first membership to get started.</p>
+            </div>
+          ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {mockMemberships.map((mem) => (
               <Card key={mem.id}>
@@ -382,6 +288,7 @@ export default function ServicesPage() {
               </Card>
             ))}
           </div>
+          )}
         </div>
       )}
 
@@ -403,6 +310,13 @@ export default function ServicesPage() {
             </Button>
           </div>
 
+          {mockTemplates.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#E5E5E5] dark:border-[#2A2A2A] py-16">
+              <Clock className="h-10 w-10 text-[#6B6B6B] mb-3" />
+              <p className="text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">No session templates yet</p>
+              <p className="mt-1 text-xs text-[#6B6B6B]">Create your first template to get started.</p>
+            </div>
+          ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {mockTemplates.map((tpl) => (
               <Card key={tpl.id}>
@@ -466,6 +380,7 @@ export default function ServicesPage() {
               </Card>
             ))}
           </div>
+          )}
         </div>
       )}
 

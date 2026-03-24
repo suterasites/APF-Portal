@@ -15,21 +15,21 @@ import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { RevenueSummary } from "@/components/dashboard/revenue-summary";
 
 // -------------------------------------------------
-// Mock data - quick stats
+// Quick stats (populated from database)
 // -------------------------------------------------
 
 const quickStats = {
-  activeClients: 42,
-  activeClientsTrend: { value: 8, direction: "up" as const },
-  sessionsThisWeek: 27,
-  sessionsThisWeekTrend: { value: 12, direction: "up" as const },
-  todaysSessions: 5,
-  outstandingInvoices: 387500, // in cents
-  outstandingInvoicesTrend: { value: 5, direction: "down" as const },
+  activeClients: 0,
+  activeClientsTrend: { value: 0, direction: "up" as const },
+  sessionsThisWeek: 0,
+  sessionsThisWeekTrend: { value: 0, direction: "up" as const },
+  todaysSessions: 0,
+  outstandingInvoices: 0, // in cents
+  outstandingInvoicesTrend: { value: 0, direction: "down" as const },
 };
 
 // -------------------------------------------------
-// Mock data - upcoming reminders
+// Upcoming reminders (populated from database)
 // -------------------------------------------------
 
 interface Reminder {
@@ -39,44 +39,7 @@ interface Reminder {
   urgent: boolean;
 }
 
-const reminders: Reminder[] = [
-  {
-    id: "1",
-    type: "overdue_payment",
-    message: "Marcus Thompson - invoice #1042 overdue by 14 days ($300.00)",
-    urgent: true,
-  },
-  {
-    id: "2",
-    type: "overdue_payment",
-    message: "Riley Anderson - invoice #1038 overdue by 7 days ($150.00)",
-    urgent: true,
-  },
-  {
-    id: "3",
-    type: "expiring_package",
-    message: "Ethan Cooper - 10-Session Pack expires in 5 days (2 sessions left)",
-    urgent: false,
-  },
-  {
-    id: "4",
-    type: "expiring_package",
-    message: "Zoe Richards - Speed Program expires in 12 days (4 sessions left)",
-    urgent: false,
-  },
-  {
-    id: "5",
-    type: "birthday",
-    message: "Oliver Chen turns 16 on 28 Mar - send a birthday message",
-    urgent: false,
-  },
-  {
-    id: "6",
-    type: "follow_up",
-    message: "Harper Wilson - new client, follow up after intro session",
-    urgent: false,
-  },
-];
+const reminders: Reminder[] = [];
 
 // -------------------------------------------------
 // Page component
@@ -91,7 +54,7 @@ export default function DashboardPage() {
           Dashboard
         </h1>
         <p className="mt-1 text-sm text-[#6B6B6B]">
-          Welcome back, James. Here is your business overview for today.
+          Welcome back. Here is your business overview for today.
         </p>
       </div>
 
@@ -143,29 +106,33 @@ export default function DashboardPage() {
             </div>
 
             <div className="px-6 pb-6">
-              <ul className="space-y-3">
-                {reminders.map((reminder) => (
-                  <li
-                    key={reminder.id}
-                    className="flex items-start gap-3"
-                  >
-                    {reminder.urgent ? (
-                      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#C23B22]" />
-                    ) : (
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#6B6B6B]" />
-                    )}
-                    <p
-                      className={
-                        reminder.urgent
-                          ? "text-sm text-[#C23B22]"
-                          : "text-sm text-[#0A0A0A] dark:text-[#FAFAFA]"
-                      }
+              {reminders.length === 0 ? (
+                <p className="text-sm text-[#6B6B6B]">No reminders at this time.</p>
+              ) : (
+                <ul className="space-y-3">
+                  {reminders.map((reminder) => (
+                    <li
+                      key={reminder.id}
+                      className="flex items-start gap-3"
                     >
-                      {reminder.message}
-                    </p>
-                  </li>
-                ))}
-              </ul>
+                      {reminder.urgent ? (
+                        <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#C23B22]" />
+                      ) : (
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#6B6B6B]" />
+                      )}
+                      <p
+                        className={
+                          reminder.urgent
+                            ? "text-sm text-[#C23B22]"
+                            : "text-sm text-[#0A0A0A] dark:text-[#FAFAFA]"
+                        }
+                      >
+                        {reminder.message}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </div>

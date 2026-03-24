@@ -11,56 +11,28 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 
-// Mock data for a football player
+// Data placeholders
 const latestAssessment = {
-  id: "1",
-  date: "2026-03-15",
-  coach: "James Sutera",
-  metrics: [
-    { name: "10m Sprint", value: "1.82", unit: "sec", previousValue: "1.89" },
-    { name: "20m Sprint", value: "3.14", unit: "sec", previousValue: "3.22" },
-    { name: "40m Sprint", value: "5.41", unit: "sec", previousValue: "5.58" },
-    { name: "T-Test Agility", value: "9.62", unit: "sec", previousValue: "9.91" },
-    { name: "Vertical Jump", value: "58", unit: "cm", previousValue: "55" },
-    { name: "Yo-Yo IR1", value: "18.4", unit: "level", previousValue: "17.8" },
-    { name: "Passing Accuracy", value: "82", unit: "%", previousValue: "78" },
-    { name: "Shooting Accuracy", value: "71", unit: "%", previousValue: "68" },
-  ],
+  id: "",
+  date: "",
+  coach: "",
+  metrics: [] as { name: string; value: string; unit: string; previousValue: string }[],
 };
 
-const progressMetrics = [
-  { name: "10m Sprint", current: 1.82, initial: 2.01, unit: "sec", lowerIsBetter: true },
-  { name: "40m Sprint", current: 5.41, initial: 5.85, unit: "sec", lowerIsBetter: true },
-  { name: "T-Test Agility", current: 9.62, initial: 10.45, unit: "sec", lowerIsBetter: true },
-  { name: "Vertical Jump", current: 58, initial: 48, unit: "cm", lowerIsBetter: false },
-  { name: "Yo-Yo IR1", current: 18.4, initial: 16.2, unit: "level", lowerIsBetter: false },
-  { name: "Passing Accuracy", current: 82, initial: 70, unit: "%", lowerIsBetter: false },
-];
+const progressMetrics: { name: string; current: number; initial: number; unit: string; lowerIsBetter: boolean }[] = [];
 
 const currentProgram = {
-  id: "1",
-  name: "Pre-Season Speed Development",
-  coach: "James Sutera",
+  id: "",
+  name: "",
+  coach: "",
   status: "active" as const,
-  currentPhase: "Phase 2 - Speed Development",
-  durationWeeks: 8,
-  currentWeek: 4,
-  exercises: [
-    { name: "A-Skip Drills", sets: 3, reps: "20m", category: "Speed" },
-    { name: "Acceleration Sprints", sets: 5, reps: "10m", category: "Speed" },
-    { name: "Lateral Shuffle", sets: 4, reps: "15m each way", category: "Agility" },
-    { name: "Box Jumps", sets: 4, reps: "8", category: "Strength" },
-    { name: "Ball Control Circuit", sets: 3, reps: "5 min", category: "Technical" },
-  ],
+  currentPhase: "",
+  durationWeeks: 0,
+  currentWeek: 0,
+  exercises: [] as { name: string; sets: number; reps: string; category: string }[],
 };
 
-const assessmentHistory = [
-  { id: "1", date: "2026-03-15", coach: "James Sutera", metricsCount: 8 },
-  { id: "2", date: "2026-02-15", coach: "James Sutera", metricsCount: 8 },
-  { id: "3", date: "2026-01-10", coach: "Chris Sutera", metricsCount: 6 },
-  { id: "4", date: "2025-11-20", coach: "James Sutera", metricsCount: 8 },
-  { id: "5", date: "2025-10-05", coach: "James Sutera", metricsCount: 6 },
-];
+const assessmentHistory: { id: string; date: string; coach: string; metricsCount: number }[] = [];
 
 function getImprovementPercentage(current: number, initial: number, lowerIsBetter: boolean): number {
   if (lowerIsBetter) {
@@ -95,50 +67,56 @@ export default function ClientProgressPage() {
               <Activity className="h-5 w-5" />
               Latest Assessment
             </CardTitle>
-            <p className="mt-1 text-sm text-[#6B6B6B]">
-              {formatDate(latestAssessment.date)} - Assessed by {latestAssessment.coach}
-            </p>
+            {latestAssessment.date && (
+              <p className="mt-1 text-sm text-[#6B6B6B]">
+                {formatDate(latestAssessment.date)} - Assessed by {latestAssessment.coach}
+              </p>
+            )}
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {latestAssessment.metrics.map((metric) => {
-              const currentVal = parseFloat(metric.value);
-              const previousVal = parseFloat(metric.previousValue);
-              const isImproved =
-                metric.unit === "sec"
-                  ? currentVal < previousVal
-                  : currentVal > previousVal;
+          {latestAssessment.metrics.length === 0 ? (
+            <p className="text-sm text-[#6B6B6B]">No assessments recorded yet.</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {latestAssessment.metrics.map((metric) => {
+                const currentVal = parseFloat(metric.value);
+                const previousVal = parseFloat(metric.previousValue);
+                const isImproved =
+                  metric.unit === "sec"
+                    ? currentVal < previousVal
+                    : currentVal > previousVal;
 
-              return (
-                <div
-                  key={metric.name}
-                  className="rounded-lg border border-[#E5E5E5] dark:border-[#2A2A2A] bg-white dark:bg-[#0A0A0A] p-3"
-                >
-                  <p className="text-xs font-medium text-[#6B6B6B]">
-                    {metric.name}
-                  </p>
-                  <p className="mt-1 text-xl font-bold text-[#0A0A0A] dark:text-[#FAFAFA]">
-                    {metric.value}
-                    <span className="ml-1 text-xs font-normal text-[#6B6B6B]">
-                      {metric.unit}
-                    </span>
-                  </p>
-                  <p
-                    className={`mt-0.5 text-xs ${
-                      isImproved ? "text-[#1E7E34]" : "text-[#C23B22]"
-                    }`}
+                return (
+                  <div
+                    key={metric.name}
+                    className="rounded-lg border border-[#E5E5E5] dark:border-[#2A2A2A] bg-white dark:bg-[#0A0A0A] p-3"
                   >
-                    {isImproved ? "+" : ""}
-                    {metric.unit === "sec"
-                      ? (previousVal - currentVal).toFixed(2)
-                      : (currentVal - previousVal).toFixed(1)}
-                    {metric.unit === "sec" ? "s faster" : ` ${metric.unit}`}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+                    <p className="text-xs font-medium text-[#6B6B6B]">
+                      {metric.name}
+                    </p>
+                    <p className="mt-1 text-xl font-bold text-[#0A0A0A] dark:text-[#FAFAFA]">
+                      {metric.value}
+                      <span className="ml-1 text-xs font-normal text-[#6B6B6B]">
+                        {metric.unit}
+                      </span>
+                    </p>
+                    <p
+                      className={`mt-0.5 text-xs ${
+                        isImproved ? "text-[#1E7E34]" : "text-[#C23B22]"
+                      }`}
+                    >
+                      {isImproved ? "+" : ""}
+                      {metric.unit === "sec"
+                        ? (previousVal - currentVal).toFixed(2)
+                        : (currentVal - previousVal).toFixed(1)}
+                      {metric.unit === "sec" ? "s faster" : ` ${metric.unit}`}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -155,6 +133,9 @@ export default function ClientProgressPage() {
             </p>
           </CardHeader>
           <CardContent>
+            {progressMetrics.length === 0 ? (
+              <p className="text-sm text-[#6B6B6B]">No progress data available yet.</p>
+            ) : (
             <div className="space-y-4">
               {progressMetrics.map((metric) => {
                 const improvement = getImprovementPercentage(
@@ -199,6 +180,7 @@ export default function ClientProgressPage() {
                 );
               })}
             </div>
+            )}
           </CardContent>
         </Card>
 
@@ -210,59 +192,67 @@ export default function ClientProgressPage() {
                 <Dumbbell className="h-5 w-5" />
                 Current Program
               </CardTitle>
-              <Badge variant="success">Active</Badge>
+              {currentProgram.name && <Badge variant="success">Active</Badge>}
             </div>
-            <p className="text-sm text-[#6B6B6B]">
-              {currentProgram.name}
-            </p>
+            {currentProgram.name && (
+              <p className="text-sm text-[#6B6B6B]">
+                {currentProgram.name}
+              </p>
+            )}
           </CardHeader>
           <CardContent>
-            {/* Program progress */}
-            <div className="mb-4">
-              <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
-                  {currentProgram.currentPhase}
-                </span>
-                <span className="text-[#6B6B6B]">
-                  Week {currentProgram.currentWeek} of {currentProgram.durationWeeks}
-                </span>
-              </div>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[#E5E5E5] dark:bg-[#2A2A2A]">
-                <div
-                  className="h-full rounded-full bg-[#0A0A0A] dark:bg-[#FAFAFA]"
-                  style={{
-                    width: `${(currentProgram.currentWeek / currentProgram.durationWeeks) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Exercises */}
-            <p className="mb-2 text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
-              Current Exercises
-            </p>
-            <div className="space-y-2">
-              {currentProgram.exercises.map((exercise, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between rounded-lg border border-[#E5E5E5] dark:border-[#2A2A2A] bg-white dark:bg-[#0A0A0A] p-3"
-                >
-                  <div>
-                    <p className="text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
-                      {exercise.name}
-                    </p>
-                    <p className="text-xs text-[#6B6B6B]">
-                      {exercise.sets} sets x {exercise.reps}
-                    </p>
+            {!currentProgram.name ? (
+              <p className="text-sm text-[#6B6B6B]">No program assigned yet.</p>
+            ) : (
+              <>
+                {/* Program progress */}
+                <div className="mb-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
+                      {currentProgram.currentPhase}
+                    </span>
+                    <span className="text-[#6B6B6B]">
+                      Week {currentProgram.currentWeek} of {currentProgram.durationWeeks}
+                    </span>
                   </div>
-                  <Badge variant="secondary">{exercise.category}</Badge>
+                  <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[#E5E5E5] dark:bg-[#2A2A2A]">
+                    <div
+                      className="h-full rounded-full bg-[#0A0A0A] dark:bg-[#FAFAFA]"
+                      style={{
+                        width: `${currentProgram.durationWeeks > 0 ? (currentProgram.currentWeek / currentProgram.durationWeeks) * 100 : 0}%`,
+                      }}
+                    />
+                  </div>
                 </div>
-              ))}
-            </div>
 
-            <p className="mt-3 text-xs text-[#6B6B6B]">
-              Assigned by {currentProgram.coach}
-            </p>
+                {/* Exercises */}
+                <p className="mb-2 text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
+                  Current Exercises
+                </p>
+                <div className="space-y-2">
+                  {currentProgram.exercises.map((exercise, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between rounded-lg border border-[#E5E5E5] dark:border-[#2A2A2A] bg-white dark:bg-[#0A0A0A] p-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
+                          {exercise.name}
+                        </p>
+                        <p className="text-xs text-[#6B6B6B]">
+                          {exercise.sets} sets x {exercise.reps}
+                        </p>
+                      </div>
+                      <Badge variant="secondary">{exercise.category}</Badge>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="mt-3 text-xs text-[#6B6B6B]">
+                  Assigned by {currentProgram.coach}
+                </p>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -276,6 +266,9 @@ export default function ClientProgressPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {assessmentHistory.length === 0 ? (
+            <p className="text-sm text-[#6B6B6B]">No assessment history available.</p>
+          ) : (
           <div className="space-y-2">
             {assessmentHistory.map((assessment, index) => (
               <div
@@ -303,6 +296,7 @@ export default function ClientProgressPage() {
               </div>
             ))}
           </div>
+          )}
         </CardContent>
       </Card>
     </div>

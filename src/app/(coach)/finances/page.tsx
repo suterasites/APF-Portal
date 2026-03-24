@@ -38,111 +38,10 @@ interface Invoice {
 }
 
 // -------------------------------------------------
-// Mock Data
+// Invoice data (populated from database)
 // -------------------------------------------------
 
-const mockInvoices: Invoice[] = [
-  {
-    id: "inv-001",
-    number: "INV-001",
-    clientName: "Liam Henderson",
-    description: "10-Session Pack - Speed & Agility",
-    amount: 110000,
-    dueDate: "2026-04-01",
-    status: "sent",
-    createdAt: "2026-03-18",
-  },
-  {
-    id: "inv-002",
-    number: "INV-002",
-    clientName: "Noah Williams",
-    description: "1-on-1 Session - Match Analysis",
-    amount: 8000,
-    dueDate: "2026-03-20",
-    status: "paid",
-    createdAt: "2026-03-14",
-  },
-  {
-    id: "inv-003",
-    number: "INV-003",
-    clientName: "Ethan Park",
-    description: "6-Week Speed Program",
-    amount: 72000,
-    dueDate: "2026-03-15",
-    status: "overdue",
-    createdAt: "2026-03-01",
-  },
-  {
-    id: "inv-004",
-    number: "INV-004",
-    clientName: "Oliver Chen",
-    description: "Monthly Unlimited Membership - March",
-    amount: 35000,
-    dueDate: "2026-04-05",
-    status: "draft",
-    createdAt: "2026-03-22",
-  },
-  {
-    id: "inv-005",
-    number: "INV-005",
-    clientName: "Jack Thompson",
-    description: "1-on-1 Speed & Agility Session x2",
-    amount: 24000,
-    dueDate: "2026-03-22",
-    status: "paid",
-    createdAt: "2026-03-10",
-  },
-  {
-    id: "inv-006",
-    number: "INV-006",
-    clientName: "Lucas Nguyen",
-    description: "Group Skills Session - 4 weeks",
-    amount: 16000,
-    dueDate: "2026-03-10",
-    status: "overdue",
-    createdAt: "2026-02-24",
-  },
-  {
-    id: "inv-007",
-    number: "INV-007",
-    clientName: "James Mitchell",
-    description: "Single 1-on-1 Session",
-    amount: 12000,
-    dueDate: "2026-03-28",
-    status: "sent",
-    createdAt: "2026-03-20",
-  },
-  {
-    id: "inv-008",
-    number: "INV-008",
-    clientName: "William Davis",
-    description: "10-Session Pack - Technical Skills",
-    amount: 110000,
-    dueDate: "2026-04-10",
-    status: "draft",
-    createdAt: "2026-03-24",
-  },
-  {
-    id: "inv-009",
-    number: "INV-009",
-    clientName: "Mason Taylor",
-    description: "Weekly Training Membership - 4 weeks",
-    amount: 40000,
-    dueDate: "2026-03-18",
-    status: "paid",
-    createdAt: "2026-03-04",
-  },
-  {
-    id: "inv-010",
-    number: "INV-010",
-    clientName: "Henry Robinson",
-    description: "1-on-1 Session - Speed Development",
-    amount: 15000,
-    dueDate: "2026-04-02",
-    status: "sent",
-    createdAt: "2026-03-23",
-  },
-];
+const mockInvoices: Invoice[] = [];
 
 // -------------------------------------------------
 // Helpers
@@ -194,7 +93,7 @@ export default function FinancesPage() {
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Computed totals (from mock data)
+  // Computed totals
   const totalRevenueThisMonth = mockInvoices
     .filter((inv) => inv.status === "paid")
     .reduce((sum, inv) => sum + inv.amount, 0);
@@ -230,7 +129,6 @@ export default function FinancesPage() {
           label="Revenue This Month"
           value={formatCurrency(totalRevenueThisMonth)}
           icon={DollarSign}
-          trend={{ value: 12, direction: "up" }}
         />
         <StatCard
           label="Outstanding"
@@ -241,7 +139,6 @@ export default function FinancesPage() {
           label="Overdue"
           value={formatCurrency(overdue)}
           icon={AlertCircle}
-          trend={{ value: 8, direction: "down" }}
         />
         <StatCard
           label="Paid This Month"

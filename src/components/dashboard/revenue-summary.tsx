@@ -4,12 +4,12 @@ import { DollarSign, TrendingUp, TrendingDown, ArrowRight } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 
-// Mock data - revenue figures in cents (AUD)
+// Revenue figures in cents (AUD)
 const revenueData = {
-  currentMonth: 1245000, // $12,450.00
-  previousMonth: 1089000, // $10,890.00
-  outstandingInvoices: 387500, // $3,875.00
-  overdueInvoices: 155000, // $1,550.00
+  currentMonth: 0,
+  previousMonth: 0,
+  outstandingInvoices: 0,
+  overdueInvoices: 0,
 };
 
 export function RevenueSummary() {
@@ -42,7 +42,7 @@ export function RevenueSummary() {
       <div className="px-6 pb-6 space-y-5">
         {/* This month */}
         <div>
-          <p className="text-sm text-[#6B6B6B]">This month (March)</p>
+          <p className="text-sm text-[#6B6B6B]">This month</p>
           <div className="mt-1 flex items-baseline gap-3">
             <span className="text-3xl font-bold text-[#0A0A0A] dark:text-[#FAFAFA]">
               {formatCurrency(revenueData.currentMonth)}

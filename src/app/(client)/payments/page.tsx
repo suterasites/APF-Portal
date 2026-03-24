@@ -13,97 +13,25 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
-// Mock data - amounts in cents (AUD)
-const outstandingBalance = 30000; // $300.00
+// Data placeholders - amounts in cents (AUD)
+const outstandingBalance = 0;
 
-const invoices = [
-  {
-    id: "INV-042",
-    description: "10-Session Pack - Speed & Agility",
-    amount: 15000,
-    dueDate: "2026-03-28",
-    status: "sent" as const,
-    issuedDate: "2026-03-14",
-  },
-  {
-    id: "INV-041",
-    description: "1-on-1 Match Analysis Review",
-    amount: 8000,
-    dueDate: "2026-03-20",
-    status: "overdue" as const,
-    issuedDate: "2026-03-06",
-  },
-  {
-    id: "INV-039",
-    description: "Group Skills Session x4",
-    amount: 7000,
-    dueDate: "2026-03-25",
-    status: "sent" as const,
-    issuedDate: "2026-03-11",
-  },
-  {
-    id: "INV-038",
-    description: "1-on-1 Speed & Agility Session x2",
-    amount: 16000,
-    dueDate: "2026-02-28",
-    status: "paid" as const,
-    issuedDate: "2026-02-14",
-  },
-  {
-    id: "INV-035",
-    description: "Monthly Membership - March",
-    amount: 20000,
-    dueDate: "2026-02-01",
-    status: "paid" as const,
-    issuedDate: "2026-01-25",
-  },
-  {
-    id: "INV-032",
-    description: "6-Week Speed Program",
-    amount: 45000,
-    dueDate: "2026-01-15",
-    status: "paid" as const,
-    issuedDate: "2026-01-02",
-  },
-];
+const invoices: {
+  id: string;
+  description: string;
+  amount: number;
+  dueDate: string;
+  status: "draft" | "sent" | "paid" | "overdue" | "cancelled";
+  issuedDate: string;
+}[] = [];
 
-const paymentHistory = [
-  {
-    id: "PAY-021",
-    invoiceId: "INV-038",
-    amount: 16000,
-    date: "2026-02-26",
-    method: "Card",
-  },
-  {
-    id: "PAY-019",
-    invoiceId: "INV-035",
-    amount: 20000,
-    date: "2026-01-30",
-    method: "Bank Transfer",
-  },
-  {
-    id: "PAY-017",
-    invoiceId: "INV-032",
-    amount: 45000,
-    date: "2026-01-14",
-    method: "Card",
-  },
-  {
-    id: "PAY-015",
-    invoiceId: "INV-028",
-    amount: 15000,
-    date: "2025-12-20",
-    method: "Cash",
-  },
-  {
-    id: "PAY-012",
-    invoiceId: "INV-025",
-    amount: 20000,
-    date: "2025-12-01",
-    method: "Card",
-  },
-];
+const paymentHistory: {
+  id: string;
+  invoiceId: string;
+  amount: number;
+  date: string;
+  method: string;
+}[] = [];
 
 const statusConfig: Record<
   string,
@@ -348,6 +276,9 @@ export default function ClientPaymentsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {paymentHistory.length === 0 ? (
+            <p className="text-sm text-[#6B6B6B]">No payment history yet.</p>
+          ) : (
           <div className="space-y-3">
             {paymentHistory.map((payment) => (
               <div
@@ -373,6 +304,7 @@ export default function ClientPaymentsPage() {
               </div>
             ))}
           </div>
+          )}
         </CardContent>
       </Card>
     </div>

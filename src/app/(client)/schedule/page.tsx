@@ -13,132 +13,39 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatDate, formatTime } from "@/lib/utils";
 
-// Mock data
-const upcomingSessions = [
-  {
-    id: "1",
-    title: "1-on-1 Speed & Agility",
-    date: "2026-03-25T16:00:00+11:00",
-    endTime: "2026-03-25T17:00:00+11:00",
-    coach: "James Sutera",
-    location: "Princes Park - Field 2",
-    type: "one_on_one" as const,
-    status: "scheduled" as const,
-  },
-  {
-    id: "2",
-    title: "Group Skills Session",
-    date: "2026-03-27T17:30:00+11:00",
-    endTime: "2026-03-27T19:00:00+11:00",
-    coach: "Chris Sutera",
-    location: "Gosch's Paddock",
-    type: "group" as const,
-    status: "scheduled" as const,
-  },
-  {
-    id: "3",
-    title: "1-on-1 Match Analysis Review",
-    date: "2026-03-30T10:00:00+11:00",
-    endTime: "2026-03-30T10:30:00+11:00",
-    coach: "James Sutera",
-    location: "Online - Zoom",
-    type: "one_on_one" as const,
-    status: "scheduled" as const,
-  },
-  {
-    id: "4",
-    title: "Group Speed Development",
-    date: "2026-04-01T16:00:00+11:00",
-    endTime: "2026-04-01T17:30:00+11:00",
-    coach: "Chris Sutera",
-    location: "Princes Park - Field 1",
-    type: "group" as const,
-    status: "scheduled" as const,
-  },
-];
+// Data placeholders
+const upcomingSessions: {
+  id: string;
+  title: string;
+  date: string;
+  endTime: string;
+  coach: string;
+  location: string;
+  type: "one_on_one" | "group";
+  status: "scheduled" | "completed" | "cancelled" | "no_show";
+}[] = [];
 
-const pastSessions = [
-  {
-    id: "5",
-    title: "1-on-1 Speed & Agility",
-    date: "2026-03-18T16:00:00+11:00",
-    endTime: "2026-03-18T17:00:00+11:00",
-    coach: "James Sutera",
-    location: "Princes Park - Field 2",
-    type: "one_on_one" as const,
-    status: "completed" as const,
-  },
-  {
-    id: "6",
-    title: "Group Skills Session",
-    date: "2026-03-15T17:30:00+11:00",
-    endTime: "2026-03-15T19:00:00+11:00",
-    coach: "Chris Sutera",
-    location: "Gosch's Paddock",
-    type: "group" as const,
-    status: "completed" as const,
-  },
-  {
-    id: "7",
-    title: "1-on-1 Technical Training",
-    date: "2026-03-11T16:00:00+11:00",
-    endTime: "2026-03-11T17:00:00+11:00",
-    coach: "James Sutera",
-    location: "Princes Park - Field 2",
-    type: "one_on_one" as const,
-    status: "completed" as const,
-  },
-  {
-    id: "8",
-    title: "Group Speed Development",
-    date: "2026-03-08T16:00:00+11:00",
-    endTime: "2026-03-08T17:30:00+11:00",
-    coach: "Chris Sutera",
-    location: "Princes Park - Field 1",
-    type: "group" as const,
-    status: "cancelled" as const,
-  },
-];
+const pastSessions: {
+  id: string;
+  title: string;
+  date: string;
+  endTime: string;
+  coach: string;
+  location: string;
+  type: "one_on_one" | "group";
+  status: "scheduled" | "completed" | "cancelled" | "no_show";
+}[] = [];
 
-const availableSlots = [
-  {
-    id: "a1",
-    title: "1-on-1 Session",
-    date: "2026-03-26T09:00:00+11:00",
-    endTime: "2026-03-26T10:00:00+11:00",
-    coach: "James Sutera",
-    location: "Princes Park - Field 2",
-    type: "one_on_one" as const,
-  },
-  {
-    id: "a2",
-    title: "1-on-1 Session",
-    date: "2026-03-26T14:00:00+11:00",
-    endTime: "2026-03-26T15:00:00+11:00",
-    coach: "Chris Sutera",
-    location: "Gosch's Paddock",
-    type: "one_on_one" as const,
-  },
-  {
-    id: "a3",
-    title: "Group Skills Session",
-    date: "2026-03-28T17:00:00+11:00",
-    endTime: "2026-03-28T18:30:00+11:00",
-    coach: "James Sutera",
-    location: "Princes Park - Field 1",
-    type: "group" as const,
-    spotsLeft: 4,
-  },
-  {
-    id: "a4",
-    title: "1-on-1 Session",
-    date: "2026-03-29T10:00:00+11:00",
-    endTime: "2026-03-29T11:00:00+11:00",
-    coach: "Chris Sutera",
-    location: "Gosch's Paddock",
-    type: "one_on_one" as const,
-  },
-];
+const availableSlots: {
+  id: string;
+  title: string;
+  date: string;
+  endTime: string;
+  coach: string;
+  location: string;
+  type: "one_on_one" | "group";
+  spotsLeft?: number;
+}[] = [];
 
 const sessionTypeLabels: Record<string, string> = {
   one_on_one: "1-on-1",
@@ -343,6 +250,10 @@ export default function ClientSchedulePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
+              {availableSlots.length === 0 ? (
+                <p className="text-sm text-[#6B6B6B]">No available slots at this time. Check back later.</p>
+              ) : (
+              <>
               <p className="mb-4 text-sm text-[#6B6B6B]">
                 Select an available slot below to book your session.
               </p>
@@ -396,6 +307,8 @@ export default function ClientSchedulePage() {
                   </div>
                 ))}
               </div>
+              </>
+              )}
             </CardContent>
           </Card>
         </div>

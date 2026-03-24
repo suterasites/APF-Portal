@@ -16,51 +16,24 @@ import { StatCard } from "@/components/dashboard/stat-card";
 import { formatCurrency } from "@/lib/utils";
 
 // -------------------------------------------------
-// Mock Data
+// Report data (populated from database)
 // -------------------------------------------------
 
-const monthlyRevenue = [
-  { month: "Oct", amount: 1820000 },
-  { month: "Nov", amount: 2140000 },
-  { month: "Dec", amount: 1650000 },
-  { month: "Jan", amount: 2380000 },
-  { month: "Feb", amount: 2560000 },
-  { month: "Mar", amount: 2190000 },
-];
+const monthlyRevenue: { month: string; amount: number }[] = [];
 
-const maxRevenue = Math.max(...monthlyRevenue.map((m) => m.amount));
+const maxRevenue = monthlyRevenue.length > 0 ? Math.max(...monthlyRevenue.map((m) => m.amount)) : 0;
 
-const newClientsPerMonth = [
-  { month: "Oct", count: 3 },
-  { month: "Nov", count: 5 },
-  { month: "Dec", count: 2 },
-  { month: "Jan", count: 6 },
-  { month: "Feb", count: 4 },
-  { month: "Mar", count: 3 },
-];
+const newClientsPerMonth: { month: string; count: number }[] = [];
 
-const maxNewClients = Math.max(...newClientsPerMonth.map((m) => m.count));
+const maxNewClients = newClientsPerMonth.length > 0 ? Math.max(...newClientsPerMonth.map((m) => m.count)) : 0;
 
-const attendanceData = [
-  { label: "Attended", value: 87, color: "bg-[#0A0A0A] dark:bg-[#FAFAFA]" },
-  { label: "Cancelled", value: 8, color: "bg-[#6B6B6B]" },
-  { label: "No-show", value: 5, color: "bg-[#C23B22]" },
-];
+const attendanceData: { label: string; value: number; color: string }[] = [];
 
-const revenueByCoach = [
-  { name: "James Sutera", amount: 760000, percentage: 55 },
-  { name: "Chris Sutera", amount: 630000, percentage: 45 },
-];
+const revenueByCoach: { name: string; amount: number; percentage: number }[] = [];
 
-const revenueByService = [
-  { name: "1-on-1 Sessions", amount: 820000, percentage: 59 },
-  { name: "Group Sessions", amount: 350000, percentage: 25 },
-  { name: "Packages", amount: 220000, percentage: 16 },
-];
+const revenueByService: { name: string; amount: number; percentage: number }[] = [];
 
-const totalRevenueYTD = monthlyRevenue
-  .filter((m) => ["Jan", "Feb", "Mar"].includes(m.month))
-  .reduce((sum, m) => sum + m.amount, 0);
+const totalRevenueYTD = 0;
 
 // -------------------------------------------------
 // Bar Chart Component
@@ -148,24 +121,21 @@ export default function ReportsPage() {
           label="Revenue YTD"
           value={formatCurrency(totalRevenueYTD)}
           icon={DollarSign}
-          trend={{ value: 14, direction: "up" }}
         />
         <StatCard
           label="Total Sessions YTD"
-          value="312"
+          value="0"
           icon={Calendar}
-          trend={{ value: 8, direction: "up" }}
         />
         <StatCard
           label="Avg Sessions / Week"
-          value="24"
+          value="0"
           icon={TrendingUp}
         />
         <StatCard
           label="Client Retention"
-          value="92%"
+          value="0%"
           icon={UserCheck}
-          trend={{ value: 3, direction: "up" }}
         />
       </div>
 
@@ -210,7 +180,7 @@ export default function ReportsPage() {
               <CardTitle>Revenue by Coach</CardTitle>
             </div>
             <p className="text-sm text-[#6B6B6B]">
-              March 2026
+              Current month
             </p>
           </CardHeader>
           <CardContent>
@@ -236,7 +206,7 @@ export default function ReportsPage() {
               <CardTitle>Revenue by Service</CardTitle>
             </div>
             <p className="text-sm text-[#6B6B6B]">
-              March 2026
+              Current month
             </p>
           </CardHeader>
           <CardContent>
@@ -269,13 +239,13 @@ export default function ReportsPage() {
             <div className="mb-6 grid grid-cols-2 gap-4">
               <div className="rounded-lg bg-[#F5F5F5] p-4 dark:bg-[#141414]">
                 <p className="text-2xl font-bold text-[#0A0A0A] dark:text-[#FAFAFA]">
-                  28
+                  0
                 </p>
                 <p className="text-sm text-[#6B6B6B]">Active clients</p>
               </div>
               <div className="rounded-lg bg-[#F5F5F5] p-4 dark:bg-[#141414]">
                 <p className="text-2xl font-bold text-[#0A0A0A] dark:text-[#FAFAFA]">
-                  5
+                  0
                 </p>
                 <p className="text-sm text-[#6B6B6B]">Inactive clients</p>
               </div>
@@ -310,19 +280,19 @@ export default function ReportsPage() {
             <div className="mb-6 grid grid-cols-3 gap-3">
               <div className="rounded-lg bg-[#F5F5F5] p-3 text-center dark:bg-[#141414]">
                 <p className="text-xl font-bold text-[#0A0A0A] dark:text-[#FAFAFA]">
-                  87%
+                  0%
                 </p>
                 <p className="text-xs text-[#6B6B6B]">Attendance</p>
               </div>
               <div className="rounded-lg bg-[#F5F5F5] p-3 text-center dark:bg-[#141414]">
                 <p className="text-xl font-bold text-[#0A0A0A] dark:text-[#FAFAFA]">
-                  8%
+                  0%
                 </p>
                 <p className="text-xs text-[#6B6B6B]">Cancelled</p>
               </div>
               <div className="rounded-lg bg-[#F5F5F5] p-3 text-center dark:bg-[#141414]">
                 <p className="text-xl font-bold text-[#C23B22]">
-                  5%
+                  0%
                 </p>
                 <p className="text-xs text-[#6B6B6B]">No-show</p>
               </div>
@@ -347,28 +317,7 @@ export default function ReportsPage() {
               <h4 className="mb-3 text-sm font-semibold text-[#0A0A0A] dark:text-[#FAFAFA]">
                 Most Popular Times
               </h4>
-              <div className="space-y-2">
-                {[
-                  { day: "Tuesday", time: "4:00 PM - 5:00 PM", sessions: 12 },
-                  { day: "Thursday", time: "4:30 PM - 5:30 PM", sessions: 10 },
-                  { day: "Saturday", time: "9:00 AM - 10:30 AM", sessions: 8 },
-                ].map((slot) => (
-                  <div
-                    key={`${slot.day}-${slot.time}`}
-                    className="flex items-center justify-between rounded-lg bg-[#F5F5F5] px-3 py-2 dark:bg-[#141414]"
-                  >
-                    <div>
-                      <p className="text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
-                        {slot.day}
-                      </p>
-                      <p className="text-xs text-[#6B6B6B]">{slot.time}</p>
-                    </div>
-                    <span className="text-sm text-[#6B6B6B]">
-                      {slot.sessions} sessions
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <p className="text-sm text-[#6B6B6B]">No data available yet.</p>
             </div>
           </CardContent>
         </Card>

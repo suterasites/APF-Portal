@@ -28,21 +28,10 @@ interface InvoiceModalProps {
 }
 
 // -------------------------------------------------
-// Mock client list
+// Client list (populated from database)
 // -------------------------------------------------
 
-const mockClients = [
-  { id: "c1", name: "Liam Henderson" },
-  { id: "c2", name: "Noah Williams" },
-  { id: "c3", name: "Ethan Park" },
-  { id: "c4", name: "Oliver Chen" },
-  { id: "c5", name: "Jack Thompson" },
-  { id: "c6", name: "Lucas Nguyen" },
-  { id: "c7", name: "James Mitchell" },
-  { id: "c8", name: "William Davis" },
-  { id: "c9", name: "Mason Taylor" },
-  { id: "c10", name: "Henry Robinson" },
-];
+const mockClients: { id: string; name: string }[] = [];
 
 // -------------------------------------------------
 // Component

@@ -14,66 +14,7 @@ interface ScheduleSession {
   coachName: string;
 }
 
-// Mock data - realistic football coaching schedule for today
-const todaySessions: ScheduleSession[] = [
-  {
-    id: "1",
-    startTime: "7:00 AM",
-    endTime: "8:00 AM",
-    clientNames: ["Liam Patterson"],
-    type: "one_on_one",
-    location: "Gosch's Paddock",
-    coachName: "James",
-  },
-  {
-    id: "2",
-    startTime: "9:00 AM",
-    endTime: "10:30 AM",
-    clientNames: [
-      "Noah Williams",
-      "Ethan Cooper",
-      "Oliver Chen",
-      "Jack Murphy",
-    ],
-    type: "group",
-    location: "Victory Park - Pitch 2",
-    coachName: "Chris",
-  },
-  {
-    id: "3",
-    startTime: "4:00 PM",
-    endTime: "5:00 PM",
-    clientNames: ["Zoe Richards"],
-    type: "one_on_one",
-    location: "Albert Park Oval",
-    coachName: "James",
-  },
-  {
-    id: "4",
-    startTime: "5:30 PM",
-    endTime: "7:00 PM",
-    clientNames: [
-      "Marcus Thompson",
-      "Kai Nguyen",
-      "Riley Anderson",
-      "Ava Mitchell",
-      "Ben Taylor",
-      "Sophie Clark",
-    ],
-    type: "group",
-    location: "Victory Park - Pitch 1",
-    coachName: "Chris",
-  },
-  {
-    id: "5",
-    startTime: "7:30 PM",
-    endTime: "8:30 PM",
-    clientNames: ["Daniel Rossi"],
-    type: "one_on_one",
-    location: "Gosch's Paddock",
-    coachName: "James",
-  },
-];
+const todaySessions: ScheduleSession[] = [];
 
 function SessionTypeBadge({ type }: { type: "one_on_one" | "group" }) {
   return (

@@ -6,29 +6,28 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 
-// Mock data
+// Data placeholder
 const clientProfile = {
-  firstName: "Lachlan",
-  lastName: "Mitchell",
-  email: "lachlan.mitchell@email.com",
-  phone: "0412 345 678",
-  dateOfBirth: "2004-06-15",
-  address: "42 Chapel Street, South Yarra VIC 3141",
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  dateOfBirth: "",
+  address: "",
   emergencyContact: {
-    name: "Sarah Mitchell",
-    phone: "0423 456 789",
-    relationship: "Mother",
+    name: "",
+    phone: "",
+    relationship: "",
   },
   football: {
-    position: "Centre Midfielder",
-    club: "Melbourne City FC - U21s",
-    competitionLevel: "Semi-Pro",
+    position: "",
+    club: "",
+    competitionLevel: "",
   },
-  medicalNotes:
-    "Previous right ankle sprain (2025). No current injuries. No allergies. Cleared for full training.",
+  medicalNotes: "",
   status: "active" as const,
-  assignedCoach: "James Sutera",
-  memberSince: "2025-08-12",
+  assignedCoach: "",
+  memberSince: "",
 };
 
 function InfoRow({
@@ -84,8 +83,8 @@ export default function ClientProfilePage() {
           <div className="flex items-center gap-4">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#0A0A0A] dark:bg-[#FAFAFA]">
               <span className="text-xl font-bold text-white dark:text-[#0A0A0A]">
-                {clientProfile.firstName[0]}
-                {clientProfile.lastName[0]}
+                {clientProfile.firstName?.[0] || ""}
+                {clientProfile.lastName?.[0] || ""}
               </span>
             </div>
             <div>
@@ -94,13 +93,17 @@ export default function ClientProfilePage() {
               </h2>
               <div className="mt-1 flex flex-wrap items-center gap-2">
                 <Badge variant="success">Active</Badge>
-                <span className="text-sm text-[#6B6B6B]">
-                  Member since {formatDate(clientProfile.memberSince)}
-                </span>
+                {clientProfile.memberSince && (
+                  <span className="text-sm text-[#6B6B6B]">
+                    Member since {formatDate(clientProfile.memberSince)}
+                  </span>
+                )}
               </div>
-              <p className="mt-1 text-sm text-[#6B6B6B]">
-                Coached by {clientProfile.assignedCoach}
-              </p>
+              {clientProfile.assignedCoach && (
+                <p className="mt-1 text-sm text-[#6B6B6B]">
+                  Coached by {clientProfile.assignedCoach}
+                </p>
+              )}
             </div>
           </div>
         </CardContent>

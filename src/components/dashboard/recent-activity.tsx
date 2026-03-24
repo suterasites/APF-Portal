@@ -22,51 +22,7 @@ interface ActivityItem {
   timestamp: string;
 }
 
-// Mock data - recent activity for a football coaching business
-const recentActivities: ActivityItem[] = [
-  {
-    id: "1",
-    type: "payment_received",
-    description: "Payment of $150.00 received from Liam Patterson",
-    timestamp: "10 minutes ago",
-  },
-  {
-    id: "2",
-    type: "booking_created",
-    description: "Zoe Richards booked a 1-on-1 session for Thursday 27 Mar",
-    timestamp: "45 minutes ago",
-  },
-  {
-    id: "3",
-    type: "client_added",
-    description: "New client Harper Wilson added by James",
-    timestamp: "2 hours ago",
-  },
-  {
-    id: "4",
-    type: "session_cancelled",
-    description: "Marcus Thompson cancelled Group Skills session on 25 Mar",
-    timestamp: "3 hours ago",
-  },
-  {
-    id: "5",
-    type: "payment_received",
-    description: "Payment of $600.00 received from Noah Williams (10-Session Pack)",
-    timestamp: "5 hours ago",
-  },
-  {
-    id: "6",
-    type: "booking_created",
-    description: "Kai Nguyen booked into Group Speed & Agility on 26 Mar",
-    timestamp: "6 hours ago",
-  },
-  {
-    id: "7",
-    type: "client_added",
-    description: "New client Ryan O'Brien added by Chris",
-    timestamp: "Yesterday",
-  },
-];
+const recentActivities: ActivityItem[] = [];
 
 const activityConfig: Record<
   ActivityType,
@@ -107,6 +63,9 @@ export function RecentActivity() {
       </div>
 
       <div className="px-6 pb-6">
+        {recentActivities.length === 0 ? (
+          <p className="text-sm text-[#6B6B6B]">No recent activity.</p>
+        ) : (
         <ul className="space-y-4">
           {recentActivities.map((activity) => {
             const config = activityConfig[activity.type];
@@ -134,6 +93,7 @@ export function RecentActivity() {
             );
           })}
         </ul>
+        )}
       </div>
     </div>
   );
